@@ -1,0 +1,26 @@
+[
+	{
+	  "id": "10",
+	  "nama_guru": "Budi Suharto",
+	  "alamat": "Jakarta Timur",
+	  "email": "budi@gmail.com",
+	  "telepon": "081312129441",
+	  "id_sekolah": "1"
+	},
+	{
+	  "id": "11",
+	  "nama_guru": "Raufani Aminullah Aziz",
+	  "alamat": "Tambun Selatan, Kab. Bekasi",
+	  "email": "raufani.dslayer@gmail.com",
+	  "telepon": "081385223913",
+	  "id_sekolah": "2"
+	},
+	{
+	  "id": "12",
+	  "nama_guru": "Abdi Sanjaya",
+	  "alamat": "Jakarta Utara",
+	  "email": "sanjaya@gmail.com",
+	  "telepon": "081182134132",
+	  "id_sekolah": "1"
+	}
+]

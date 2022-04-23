@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TableKelas from '../component/tableLlist/tableKelas'
 import Alert from '../component/alert/Alert'
  
-const apiURLKelas = "http://localhost:3005/kelas/"
+//const apiURLKelas = "http://localhost:3005/kelas/"
  
 class CrudKelas extends Component {
     constructor(props) {
@@ -17,13 +17,12 @@ class CrudKelas extends Component {
                 responCode: 0,
             },
             DataUserNew: {     
-                id: 1,
                 nama_kelas: '',
-                rank_kelas: '',
+                katagori: '',
                 jurusan: '',
                 id_sekolah: '',
                 id_wali: '',
-            }
+            },
         }
     }
  
@@ -32,7 +31,7 @@ class CrudKelas extends Component {
     }
  
     GetdataUsers() {
-        fetch(apiURLKelas).then(res => {
+        fetch('/kelas').then(res => {
             if (res.status === 200)
                 return res.json()
             else
@@ -49,7 +48,7 @@ class CrudKelas extends Component {
     SaveNewDataUSer = () => {
         const Newdata = this.state.DataUserNew;
  
-        fetch(apiURLKelas, {
+        fetch('/kelas', {
             method: "post",
             headers: {
                 'Accept': 'application/json',
@@ -74,9 +73,9 @@ class CrudKelas extends Component {
 
     UpdateDataUser = () => {
         const dataUpdate = this.state.DataUserNew;
-        const id = dataUpdate.id;
+        const id = dataUpdate._id;
  
-        fetch(apiURLKelas + id, {
+        fetch('/kelas/' + id, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -104,7 +103,7 @@ class CrudKelas extends Component {
     DeleteDataUser = (data) => {
         const id = data;
         
-        fetch(apiURLKelas + id, {
+        fetch('/kelas/' + id, {
             method: 'DELETE',
         }).then((res) => {
             console.log(res)
@@ -125,11 +124,7 @@ class CrudKelas extends Component {
     }
 
     HendelOnchange = (event) => {
-        const NumberingId = this.state.totalData + 1; 
         let prmInputUser = { ...this.state.DataUserNew }; 
-        if (!this.state.isUpdate) { 
-            prmInputUser['id'] = NumberingId;
-        }
         prmInputUser[event.target.name] = event.target.value;
         this.setState({
             DataUserNew: prmInputUser
@@ -141,9 +136,9 @@ class CrudKelas extends Component {
         this.setState({
             isUpdate: false,
             DataUserNew: {
-                id: 1,
+                id: '',
                 nama_kelas: '',
-                rank_kelas: '',
+                katagori: '',
                 Jurusan: '',
                 id_sekolah: '',
                 id_wali: '',
@@ -167,15 +162,6 @@ class CrudKelas extends Component {
             this.UpdateDataUser();
         } else {
             this.SaveNewDataUSer();
-        }
-    }
-
-    HendelDelete = (data) => {
-        console.log('Id delete =', data)
-        const id = data;
- 
-        if (window.confirm('Apakah anda akan menghapus data ' + id + ' ?')) {
-            this.DeleteDataUser(id)
         }
     }
 
@@ -213,8 +199,8 @@ class CrudKelas extends Component {
                         <div className="form-inline" >
                             <label htmlFor="nama_kelas">Nama Kelas:</label>
                             <input type="text" id="nama_kelas" placeholder="Nama Kelas" name="nama_kelas" onChange={this.HendelOnchange} value={this.state.DataUserNew.nama_kelas} />
-                            <label htmlFor="rank_kelas">Label Kelas:</label>
-                            <input type="text" id="rank_kelas" placeholder="Label Kelas" name="rank_kelas" onChange={this.HendelOnchange} value={this.state.DataUserNew.rank_kelas} />
+                            <label htmlFor="katagori">Label Kelas:</label>
+                            <input type="text" id="katagori" placeholder="Label Kelas" name="katagori" onChange={this.HendelOnchange} value={this.state.DataUserNew.katagori} />
                             <label htmlFor="alamat">jurusan:</label>
                             <input type="text" id="jurusan" placeholder="Jurusan" name="jurusan" onChange={this.HendelOnchange} value={this.state.DataUserNew.jurusan} />
                             <label htmlFor="alamat">ID Sekolah:</label>
@@ -226,7 +212,7 @@ class CrudKelas extends Component {
                     </div>
                 </div>
  
-                <div className="Card">
+                <div className="container">
                     <div className="my-table" >
                         <div className='content'>Total data {this.state.totalData} record</div>
                         <table>
@@ -234,7 +220,7 @@ class CrudKelas extends Component {
                                 <tr>
                                     <th>#ID</th>
                                     <th>Nama Kelas</th>
-                                    <th>Rank Kelas</th>
+                                    <th>Label</th>
                                     <th>jurusan</th>
                                     <th>ID Sekolah</th>
                                     <th>ID Wali</th>

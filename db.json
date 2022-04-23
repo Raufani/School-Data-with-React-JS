@@ -1,7 +1,7 @@
 {
-  "user":[
+  "user": [
     {
-      "id":"1",
+      "id": "1",
       "username": "admin",
       "password": "admin123"
     }
@@ -10,7 +10,7 @@
     {
       "id": "1",
       "nama_sekolah": "SMK Pangdam Jaya Negeri",
-      "alamat": "Bekasi",
+      "alamat": "Bekasi Timur",
       "email": "pangdam_jaya@mail.com",
       "telepon": "92142180",
       "gambar": "pangdam_jaya.jpg"
@@ -22,6 +22,14 @@
       "email": "smk_tektel@mail.com",
       "telepon": "92314167",
       "gambar": "smk_tektel.jpg"
+    },
+    {
+      "id": 3,
+      "nama_sekolah": "SMK Telkom",
+      "email": "telkom@gmail.com",
+      "telepon": "9999999",
+      "gambar": "",
+      "alamat": "Tambun utara"
     }
   ],
   "guru": [

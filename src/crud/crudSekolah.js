@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
 import TableSekolah from '../component/tableLlist/tableSekolah'
 import Alert from '../component/alert/Alert'
+
  
-const apiURLSekolah = "http://localhost:3005/Sekolah/"
+//const apiURLSekolah = "http://localhost:3005/Sekolah/"
  
 class CrudSekolah extends Component {
     constructor(props) {
         super(props);
         this.state = {
             dataUser: [],      
-            totalData: 0,      
+            totalData: 0,
+            setImage:null,
+            setPreviewImage:"",      
             isUpdate: false,    
             Notif: {            
                 alertShow: false,
@@ -17,22 +20,34 @@ class CrudSekolah extends Component {
                 responCode: 0,
             },
             DataUserNew: {     
-                id: 1,
                 nama_sekolah: '',
                 alamat: '',
                 email: '',
                 telepon: '',
                 gambar: '',
-            }
+            },
+            
         }
     }
  
     componentDidMount() {
         this.GetdataUsers()
     }
+
+    handleUpload(){
+        const images = this.state.DataUserNew.gambar;
+        fetch('/upload', {
+            method: "post",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+        
+        })
+    }
  
     GetdataUsers() {
-        fetch(apiURLSekolah).then(res => {
+        fetch('/sekolah').then(res => {
             if (res.status === 200)
                 return res.json()
             else
@@ -49,8 +64,8 @@ class CrudSekolah extends Component {
 
     SaveNewDataUSer = () => {
         const Newdata = this.state.DataUserNew;
- 
-        fetch(apiURLSekolah, {
+        
+        fetch('/sekolah', {
             method: "post",
             headers: {
                 'Accept': 'application/json',
@@ -67,7 +82,8 @@ class CrudSekolah extends Component {
                     responCode: res.status,
                 }
             })
- 
+
+            this.handleUpload();
             this.GetdataUsers()
             this.ClearForm()
         });
@@ -75,9 +91,11 @@ class CrudSekolah extends Component {
 
     UpdateDataUser = () => {
         const dataUpdate = this.state.DataUserNew;
-        const id = dataUpdate.id;
+       
+            
+        const id = dataUpdate._id;
  
-        fetch(apiURLSekolah + id, {
+        fetch('/sekolah/' + id, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -103,7 +121,7 @@ class CrudSekolah extends Component {
     DeleteDataUser = (data) => {
         const id = data;
         
-        fetch(apiURLSekolah + id, {
+        fetch('/sekolah/' + id, {
             method: 'DELETE',
         }).then((res) => {
             console.log(res)
@@ -123,11 +141,7 @@ class CrudSekolah extends Component {
     }
 
     HendelOnchange = (event) => {
-        const NumberingId = this.state.totalData + 1; 
         let prmInputUser = { ...this.state.DataUserNew }; 
-        if (!this.state.isUpdate) { 
-            prmInputUser['id'] = NumberingId;
-        }
         prmInputUser[event.target.name] = event.target.value;
         this.setState({
             DataUserNew: prmInputUser
@@ -139,8 +153,9 @@ class CrudSekolah extends Component {
         this.setState({
             isUpdate: false,
             DataUserNew: {
-                id: 1,
+                _id: '',
                 nama_sekolah: '',
+                alamat:'',
                 email: '',
                 telepon: '',
                 gambar: ''
@@ -184,6 +199,8 @@ class CrudSekolah extends Component {
         }
     }
 
+    
+
  
     render() {
  
@@ -199,7 +216,7 @@ class CrudSekolah extends Component {
                     <div className="titel">
                         <div className="form-inline" >
                             <label htmlFor="nama_sekolah">Nama:</label>
-                            <input type="text" id="nama_sekolah" placeholder="Nama" name="nama_sekolah" onChange={this.HendelOnchange} value={this.state.DataUserNew.nama_guru} />
+                            <input type="text" id="nama_sekolah" placeholder="Nama" name="nama_sekolah" onChange={this.HendelOnchange} value={this.state.DataUserNew.nama_sekolah} />
                             
                             <label htmlFor="alamat">Alamat:</label>
                             <input type="text" id="alamat" placeholder="Alamat" name="alamat" onChange={this.HendelOnchange} value={this.state.DataUserNew.alamat} />
@@ -208,7 +225,7 @@ class CrudSekolah extends Component {
                             <label htmlFor="telepon">Telpon:</label>
                             <input type="text" id="telepon" placeholder="No.Telepon" name="telepon" onChange={this.HendelOnchange} value={this.state.DataUserNew.telepon} />
                             <label htmlFor="alamat">Foto Sekolah:</label>
-                            <input type="file" id="gambar" name="gambar" accept="image/*" />
+                            <input type="file" id="gambar" name='gambar' onChange={this.handleUpload} />
                             <button className="my-button btn-blue" onClick={this.HandleSave} >Simpan</button>
                         </div>
                     </div>

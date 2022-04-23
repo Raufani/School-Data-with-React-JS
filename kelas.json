@@ -1,0 +1,18 @@
+[
+	{
+	  "id": "1",
+	  "nama_kelas": "12-A",
+	  "rank_kelas": "XII",
+	  "jurusan": "Teknik Komputer",
+	  "id_sekolah": "1",
+	  "id_wali": "11"
+	},
+	{
+	  "id": 2,
+	  "nama_kelas": "10-B",
+	  "rank_kelas": "X",
+	  "jurusan": "Ekonomi",
+	  "id_sekolah": "2",
+	  "id_wali": "12"
+	}
+]

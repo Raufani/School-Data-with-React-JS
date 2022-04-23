@@ -11,7 +11,7 @@ class Menu extends Component {
                     <input className="menu-btn" type="checkbox" id="menu-btn" />
                     <label className="menu-icon" for="menu-btn"><span className="navicon"></span></label>
                     <ul className="menu">
-                        <li><Link to="/dashboard">Laman Utama</Link></li>
+                        <li><Link to="/">Laman Utama</Link></li>
                         <li><Link to="/dataSekolah">Daftar Sekolah</Link></li>
                         <li><Link to="/dataGuru">Data Guru</Link></li>
                         <li><Link to="/dataKelas">Data Kelas 2021</Link></li>

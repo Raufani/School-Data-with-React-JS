@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import TableGuru from '../component/tableLlist/tableGuru'
 import Alert from '../component/alert/Alert'
  
-const apiURLGuru = "http://localhost:3005/guru/"
+//const apiURLGuru = "http://localhost:3005/guru/"
  
 class CrudGuru extends Component {
     constructor(props) {
@@ -17,7 +17,6 @@ class CrudGuru extends Component {
                 responCode: 0,
             },
             DataUserNew: {      
-                id: 1,
                 nama_guru: '',
                 alamat: '',
                 email: '',
@@ -28,11 +27,13 @@ class CrudGuru extends Component {
     }
  
     componentDidMount() {
+        this.GetdataSekolah()
         this.GetdataUsers()
+        
     }
- 
-    GetdataUsers() {
-        fetch(apiURLGuru).then(res => {
+
+    GetdataSekolah() {
+        fetch('/sekolah').then(res => {
             if (res.status === 200)
                 return res.json()
             else
@@ -45,12 +46,30 @@ class CrudGuru extends Component {
             })
         })
     }
+ 
+    GetdataUsers() {
+        fetch('/guru').then(res => {
+            if (res.status === 200)
+                return res.json()
+            else
+                return <p>No data Found</p>
+        }).then(resdata => {
+            console.log(resdata)
+            this.setState({
+                dataUser: resdata,
+                totalData: resdata.length
+            })
+        }).catch(err => {
+            console.log(err);
+            
+          })
+    }
 
 
     SaveNewDataUSer = () => {
         const Newdata = this.state.DataUserNew;
  
-        fetch(apiURLGuru, {
+        fetch('/guru', {
             method: "post",
             headers: {
                 'Accept': 'application/json',
@@ -73,11 +92,11 @@ class CrudGuru extends Component {
         });
     }
 
-    UpdateDataUser = () => {
+    UpdateDataUser = (data) => {
         const dataUpdate = this.state.DataUserNew;
-        const id = dataUpdate.id;
+        const id = dataUpdate._id;
  
-        fetch(apiURLGuru + id, {
+        fetch('/guru/' + id, {
             method: 'PUT',
             headers: {
                 'Accept': 'application/json',
@@ -103,7 +122,7 @@ class CrudGuru extends Component {
     DeleteDataUser = (data) => {
         const id = data;
         
-        fetch(apiURLGuru + id, {
+        fetch('/guru/' + id, {
             method: 'DELETE',
         }).then((res) => {
             console.log(res)
@@ -123,11 +142,7 @@ class CrudGuru extends Component {
     }
 
     HendelOnchange = (event) => {
-        const NumberingId = this.state.totalData + 1; 
         let prmInputUser = { ...this.state.DataUserNew }; 
-        if (!this.state.isUpdate) { 
-            prmInputUser['id'] = NumberingId;
-        }
         prmInputUser[event.target.name] = event.target.value;
         this.setState({
             DataUserNew: prmInputUser
@@ -139,8 +154,9 @@ class CrudGuru extends Component {
         this.setState({
             isUpdate: false,
             DataUserNew: {
-                id: 1,
+                _id:'',
                 nama_guru: '',
+                alamat:'',
                 email: '',
                 telepon: '',
                 id_sekolah: ''
@@ -169,10 +185,12 @@ class CrudGuru extends Component {
     HendelUpdate = (data) => {
         console.log('Update id', data.id);
         console.log('Update arry', data);
+        const id = data;
         this.setState({
             DataUserNew: data,
             isUpdate: true
         })
+        
     }
     
     HendelDelete = (data) => {
@@ -214,7 +232,7 @@ class CrudGuru extends Component {
                     </div>
                 </div>
  
-                <div className="card">
+                <div className="container">
                     <div className="my-table" >
                         <div className="content">Total data {this.state.totalData} record</div>
                         <table>
@@ -233,7 +251,7 @@ class CrudGuru extends Component {
                                 {
                                     this.state.dataUser.map(dataUser => {
                                         return (
-                                            <TableGuru key={dataUser.id}
+                                            <TableGuru key={dataUser._id}
                                                 data={dataUser}
                                                 update={this.HendelUpdate} 
                                                 remove={this.HendelDelete}
